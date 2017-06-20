@@ -1,0 +1,20 @@
+sudo: required
+dist: trusty
+
+services:
+- docker
+
+# To regenerate secrets, set environment variables mentioned below and:
+#   travis encrypt DOCKER_USER=$DOCKER_USER DOCKER_PASS=$DOCKER_PASS
+
+env:
+  global:
+  - REPO=kariusdx/ubuntu1404-java8
+  - secure: "KQZaCjbejuYnOzlAZEHYcFSw/FNvy+DlP5M++6xZpNTYNKXIkCmEZ5vywAC34pCJVg0sRqZ3CvUxNAtmuVnvBn4EeGmv0+mkq/CLCXFLV0nSnmy9VX0k1YtGdAPKWHfhbOH2njz4UN9TYxaZb3igch3gLppAoa+B1MPbfLI2DAscFD2irzE8c3WAgT3XJYFDN2AeFOHPtKnbNQS2iNNgBPTkSotf/KqD3tA7SK9/IAD8zdDMwavxQfYFu0Dv8rtnteVC4Z3c36ImPT3dB4X6cagPY4PMGGCtU+0r8i4OTDeGUiZmXsEuhtsUxgEvJ5HDaBnaoy+2UAWAoftA3T9ZkFe40pZNknWi2NfLg+CbALMvSMzFgaugprbms0VHGPQT5dYQKEf6u49eWSDRWlBvrznSO3yIn5Si8vTm73bUhzV2JjcVoMDCHpUie5RKSMO3mJ+kCGbC1GY+jjp2bw+ppYJLLsp+gOSQawJZu+vpKMtfU2E/+3+pqDL71iABcXg8G3PozTvexUxpJtWBzT7iEgdJVErxv2W+lbRaVXuavJn5+zEl38UIwlQ2P/lk+Bn+TmmrrfLbiBAGJKPe6E1SW4dWboMYJf4spG8U3msmT97/bhepL9X+VV7iLj+izRM90lXOIuX4W4RcC2iQYWBHCxJKBP9ShyX4mlnuPcXFrYY="
+
+script:
+- docker build --tag kariusdx/$REPO:8u131 .
+
+after_success:
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- docker push $REPO
